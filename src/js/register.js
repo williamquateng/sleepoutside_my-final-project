@@ -87,10 +87,18 @@ function getRegistrationValues() {
     address,
     gender,
     email,
-    avatar: getGenderAvatar(gender),
     password,
     confirmPassword,
   };
+}
+
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error("Failed to read file"));
+    reader.readAsDataURL(file);
+  });
 }
 
 function validateRegistration(customer) {
@@ -142,6 +150,19 @@ async function handleSubmit(event) {
   clearMessage();
 
   const customer = getRegistrationValues();
+  // handle optional avatar file input (stretch)
+  const avatarInput = form.querySelector("#avatar");
+  const avatarFile = avatarInput?.files?.[0];
+  if (avatarFile) {
+    try {
+      customer.avatar = await readFileAsDataURL(avatarFile);
+    } catch (err) {
+      console.warn("Avatar read failed, falling back to gender avatar", err);
+      customer.avatar = getGenderAvatar(customer.gender);
+    }
+  } else {
+    customer.avatar = getGenderAvatar(customer.gender);
+  }
   const validationError = validateRegistration(customer);
   if (validationError) {
     showMessage(validationError);
@@ -274,3 +295,30 @@ if (loginForm) {
 }
 
 setupPasswordVisibilityToggles();
+
+function setupAvatarPreview() {
+  const avatarInput = form?.querySelector("#avatar");
+  const preview = form?.querySelector("#avatar-preview");
+  if (!avatarInput || !preview) return;
+
+  avatarInput.addEventListener("change", async () => {
+    const file = avatarInput.files?.[0];
+    if (!file) {
+      preview.src = "";
+      preview.classList.add("hide");
+      return;
+    }
+
+    try {
+      const dataUrl = await readFileAsDataURL(file);
+      preview.src = dataUrl;
+      preview.classList.remove("hide");
+    } catch (err) {
+      console.warn("Failed to load avatar preview", err);
+      preview.src = "";
+      preview.classList.add("hide");
+    }
+  });
+}
+
+setupAvatarPreview();

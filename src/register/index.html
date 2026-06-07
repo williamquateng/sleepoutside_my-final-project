@@ -35,6 +35,13 @@
           <input id="address" name="address" type="text" required />
         </div>
         <div class="form-row">
+          <label for="avatar">Avatar (optional)</label>
+          <input id="avatar" name="avatar" type="file" accept="image/*" />
+          <div class="avatar-preview-row">
+            <img id="avatar-preview" class="avatar-preview hide" src="" alt="Avatar preview" />
+          </div>
+        </div>
+        <div class="form-row">
           <label for="gender">Gender</label>
           <select id="gender" name="gender" required>
             <option value="">Select gender</option>
