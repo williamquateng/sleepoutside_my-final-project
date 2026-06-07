@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sleep Outside | Sign In</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/main.js" type="module"></script>
+  <script src="/js/register.js" type="module"></script>
+</head>
+
+<body>
+  <header class="divider" id="header"></header>
+
+  <main class="divider">
+    <section class="products">
+      <h2>Sign In</h2>
+      <p class="form-intro">Sign in to manage your wishlist and leave comments.</p>
+      <form class="account-form" id="login-form" novalidate>
+        <div class="form-row">
+          <label for="login-email">Email</label>
+          <input id="login-email" name="email" type="email" required />
+        </div>
+        <div class="form-row">
+          <label for="login-password">Password</label>
+          <div class="password-field">
+            <input id="login-password" name="password" type="password" required />
+            <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M12 5c5 0 9 4.5 10 7-1 2.5-5 7-10 7S3 14.5 2 12c1-2.5 5-7 10-7Zm0 2C8.6 7 5.6 9.5 4.2 12 5.6 14.5 8.6 17 12 17s6.4-2.5 7.8-5C18.4 9.5 15.4 7 12 7Zm0 2.5A2.5 2.5 0 1 1 12 14a2.5 2.5 0 0 1 0-5Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="form-message hide" id="login-message"></div>
+        <button type="submit">Sign In</button>
+      </form>
+      <p class="form-intro">Need an account? <a href="/register/index.html">Register here</a>.</p>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+</body>
+
+</html>

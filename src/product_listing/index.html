@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sleep Outside | Product Listing</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/js/product-listing.js" type="module"></script>
+  </head>
+
+  <body>
+    <header class="divider" id="header">
+    </header>
+    <nav class="breadcrumbs" aria-label="Breadcrumb"></nav>
+
+    <main class="divider">
+      <section class="products">
+        <h2 class="product-listing__title">Products</h2>
+        <div class="product-listing__controls">
+          <label for="product-sort">Sort by:</label>
+          <select id="product-sort" class="product-sort">
+            <option value="">Default</option>
+            <option value="name-asc">Name A–Z</option>
+            <option value="name-desc">Name Z–A</option>
+            <option value="price-asc">Price Low to High</option>
+            <option value="price-desc">Price High to Low</option>
+          </select>
+        </div>
+        <ul class="product-list"></ul>
+        <div class="product-modal hide" id="productQuickViewModal" role="dialog" aria-modal="true" aria-labelledby="quickViewTitle">
+          <div class="product-modal__overlay"></div>
+          <div class="product-modal__content">
+            <div class="product-modal__body"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="footer">
+    </footer>
+  </body>
+</html>

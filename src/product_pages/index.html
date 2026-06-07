@@ -1,0 +1,69 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Sleep Outside | Product Details</title>
+
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <script src="/js/product.js" type="module"></script>
+    <script src="/js/main.js" type="module"></script>
+  </head>
+
+  <body>
+    <header class="divider" id="header">
+    </header>
+    <nav class="breadcrumbs" aria-label="Breadcrumb"></nav>
+
+    <main class="divider">
+      <section class="product-detail">
+        <h3>Brand</h3>
+
+        <h2 class="divider">Product Name</h2>
+
+        <img
+          class="divider"
+          src="/images/tents/marmot-ajax-tent-3-person-3-season-in-pale-pumpkin-terracotta~p~880rr_01~320.jpg"
+          alt="Product image"
+        />
+
+        <div class="product-pricing">
+          <span class="product-discount-flag hide"></span>
+          <p class="product-card__price--retail hide"></p>
+          <p class="product-card__price">$0.00</p>
+        </div>
+
+        <p class="product-discount hide"></p>
+
+        <p class="product__color">Color</p>
+
+        <p class="product__description">Product description</p>
+
+        <div class="product-detail__add">
+          <button id="addToCart" data-id="">Add to Cart</button>
+          <button id="addToWishlist" type="button" data-id="">Add to Wishlist</button>
+        </div>
+
+        <section class="product-comments">
+          <h3>Customer Comments</h3>
+          <div id="comment-list" class="comment-list"></div>
+          <form id="comment-form" class="comment-form">
+            <label for="comment-text">Add a comment</label>
+            <textarea id="comment-text" name="comment" rows="4" required></textarea>
+            <p class="comment-login-message hide">
+              Please <a href="/register/index.html">register or sign in</a> to add a comment.
+            </p>
+            <button type="submit">Post Comment</button>
+          </form>
+        </section>
+      </section>
+    </main>
+
+    <footer id="footer">
+    </footer>
+  </body>
+</html>

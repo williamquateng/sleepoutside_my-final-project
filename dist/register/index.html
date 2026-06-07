@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sleep Outside | Register</title>
+  <script type="module" crossorigin src="/js/utils.js"></script>
+  <script type="module" crossorigin src="/js/Alert.js"></script>
+  <script type="module" crossorigin src="/js/main2.js"></script>
+  <script type="module" crossorigin src="/js/ExternalServices.js"></script>
+  <script type="module" crossorigin src="/js/register2.js"></script>
+  <link rel="stylesheet" crossorigin href="/css/style.css">
+</head>
+
+<body>
+  <header class="divider" id="header"></header>
+
+  <main class="divider">
+    <section class="products">
+      <h2>Customer Registration</h2>
+      <p class="form-intro">Create your account to save your cart and make checkout faster.</p>
+      <form class="account-form" id="register-form" novalidate>
+        <div class="form-row">
+          <label for="first-name">First Name</label>
+          <input id="first-name" name="firstName" type="text" required />
+        </div>
+        <div class="form-row">
+          <label for="last-name">Last Name</label>
+          <input id="last-name" name="lastName" type="text" required />
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required />
+        </div>
+        <div class="form-row">
+          <label for="address">Address</label>
+          <input id="address" name="address" type="text" required />
+        </div>
+        <div class="form-row">
+          <label for="gender">Gender</label>
+          <select id="gender" name="gender" required>
+            <option value="">Select gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="password">Password</label>
+          <div class="password-field">
+            <input id="password" name="password" type="password" minlength="6" required />
+            <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M12 5c5 0 9 4.5 10 7-1 2.5-5 7-10 7S3 14.5 2 12c1-2.5 5-7 10-7Zm0 2C8.6 7 5.6 9.5 4.2 12 5.6 14.5 8.6 17 12 17s6.4-2.5 7.8-5C18.4 9.5 15.4 7 12 7Zm0 2.5A2.5 2.5 0 1 1 12 14a2.5 2.5 0 0 1 0-5Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="confirm-password">Confirm Password</label>
+          <div class="password-field">
+            <input id="confirm-password" name="confirmPassword" type="password" minlength="6" required />
+            <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M12 5c5 0 9 4.5 10 7-1 2.5-5 7-10 7S3 14.5 2 12c1-2.5 5-7 10-7Zm0 2C8.6 7 5.6 9.5 4.2 12 5.6 14.5 8.6 17 12 17s6.4-2.5 7.8-5C18.4 9.5 15.4 7 12 7Zm0 2.5A2.5 2.5 0 1 1 12 14a2.5 2.5 0 0 1 0-5Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="form-message hide" id="form-message"></div>
+        <button type="submit">Register</button>
+      </form>
+      <p class="form-intro">Already registered? <a href="/signin/index.html">Sign in here</a>.</p>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+</body>
+
+</html>

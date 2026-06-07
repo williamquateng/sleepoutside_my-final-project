@@ -1,0 +1,39 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Sleep Outside | Cart</title>
+
+    <script type="module" crossorigin src="/js/cart.js"></script>
+    <link rel="modulepreload" crossorigin href="/js/utils.js">
+    <link rel="stylesheet" crossorigin href="/css/style.css">
+  </head>
+
+  <body>
+    <header class="divider" id="header">
+    </header>
+
+    <main class="divider">
+      <section class="products">
+        <h2>My Cart</h2>
+
+        <ul class="product-list cart-list"></ul>
+
+        <div class="cart-footer hide">
+          <button type="submit" onclick="location.href='/checkout/index.html'">
+            Go To Checkout
+          </button>
+          <p class="cart-total">Total: </p>
+        </div>
+        
+      </section>
+    </main>
+
+    <footer id="footer">
+    </footer>
+  </body>
+</html>
