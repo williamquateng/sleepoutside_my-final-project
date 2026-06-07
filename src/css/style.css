@@ -167,10 +167,14 @@ button,
 
 .cart-count {
   position: absolute;
-  top: -0.8em;
-  right: -0.8em;
+  top: 0;
+  right: 0;
+  transform: translate(45%, -45%);
+  display: inline-grid;
+  place-items: center;
   min-width: 1.4em;
-  padding: 0.15em 0.35em;
+  height: 1.4em;
+  padding: 0 0.35em;
   border-radius: 999px;
   background-color: var(--tertiary-color);
   color: white;
@@ -180,6 +184,20 @@ button,
 
 .cart:hover svg {
   fill: gray;
+}
+
+/* Responsive adjustments for cart badge */
+@media (max-width: 500px) {
+  .cart svg {
+    width: 30px;
+  }
+
+  .cart-count {
+    transform: translate(55%, -55%);
+    font-size: 0.7rem;
+    min-width: 1.2em;
+    height: 1.2em;
+  }
 }
 
 /* End cart icon styles */

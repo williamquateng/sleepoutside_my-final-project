@@ -44,12 +44,7 @@ export default class ProductDetails {
   }
 
   addItemToCart(product) {
-    const storedCart = getLocalStorage("so-cart");
-    const cart = Array.isArray(storedCart)
-      ? storedCart
-      : storedCart
-        ? [storedCart]
-        : [];
+    const cart = getCartItems();
     const cartItem = cart.find((item) => item.Id === product.Id);
 
     if (cartItem) {

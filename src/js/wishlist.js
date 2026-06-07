@@ -51,8 +51,7 @@ function addToCart(product) {
   } else {
     cart.push({ ...product, Quantity: 1 });
   }
-
-  setLocalStorage("so-cart", cart);
+  setCartItems(cart);
   updateCartCount();
   animateCartIcon();
 }
