@@ -9,7 +9,8 @@ import {
 
 function getFilteredCartItems() {
   const storedCart = getCartItems();
-  return storedCart.filter((item) => item && typeof item === "object" && item.Id);
+  const items = Array.isArray(storedCart) ? storedCart : [];
+  return items.filter((item) => item && typeof item === "object" && item.Id);
 }
 
 function getItemPrice(item) {
@@ -79,12 +80,12 @@ function setupCartActions() {
 }
 
 function renderCartContents() {
-  const cartItems = getFilteredCartItems();
+  const cartItems = getFilteredCartItems() || [];
   const listEl = document.querySelector(".product-list");
   if (!listEl) {
     return;
   }
-  if (cartItems.length === 0) {
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
     listEl.innerHTML = `
       <li class="cart-card cart-card--empty">
         Your cart is empty. Browse products to add items to your cart.
@@ -103,7 +104,7 @@ function renderCartTotal(cartItems) {
   if (!footer || !totalEl) {
     return;
   }
-  if (cartItems.length === 0) {
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
     footer.classList.add("hide");
     totalEl.textContent = "Total: ";
     return;
