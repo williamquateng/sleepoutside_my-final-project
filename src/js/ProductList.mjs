@@ -36,6 +36,9 @@ function productCardTemplate(product, category) {
   <button class="product-card__quick-view" type="button" data-quick-view-id="${product.Id}">
     Quick View
   </button>
+  <button class="product-card__wishlist" type="button" data-wishlist-id="${product.Id}">
+    Add to Wishlist
+  </button>
 </li>`;
 }
 

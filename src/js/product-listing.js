@@ -2,10 +2,13 @@ import ExternalServices from "./ExternalServices.mjs";
 import ProductList from "./ProductList.mjs";
 import Alert from "./Alert.js";
 import {
+  addProductToWishlist,
+  alertMessage,
   getParam,
   LoadHeaderFooter,
   getImageUrl,
   getListingPriceHtml,
+  updateWishlistCount,
 } from "./utils.mjs";
 
 const category = getParam("category") || "tents";
@@ -75,26 +78,26 @@ function closeQuickView() {
 
 productListElement?.addEventListener("click", async (event) => {
   const quickViewButton = event.target.closest("[data-quick-view-id]");
-
-  if (!quickViewButton) {
+  if (quickViewButton) {
+    event.preventDefault();
+    const productId = quickViewButton.dataset.quickViewId;
+    const product = await dataSource.findProductById(productId);
+    openQuickView(product);
     return;
   }
 
-  event.preventDefault();
-  const productId = quickViewButton.dataset.quickViewId;
-  const product = await dataSource.findProductById(productId);
-
-  openQuickView(product);
-});
-
-modal?.addEventListener("click", (event) => {
-  if (
-    event.target === modal ||
-    event.target.closest(".product-modal__close")
-  ) {
-    closeQuickView();
-  }
-});
+  const wishlistButton = event.target.closest("[data-wishlist-id]");
+  if (wishlistButton) {
+    event.preventDefault();
+    const productId = wishlistButton.dataset.wishlistId;
+    const product = await dataSource.findProductById(productId);
+    const added = addProductToWishlist(product);
+    if (added) {
+      alertMessage(`${product.Name} was added to your wishlist.`, false);
+    } else {
+      alertMessage(`${product.Name} is already in your wishlist.`, false);
+    }
+    updateWishlistCount();
 
 function formatCategory(value) {
   return value

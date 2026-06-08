@@ -102,6 +102,38 @@ export function getCustomerStorageKey(prefix, customer = getCurrentCustomer()) {
   const identifier = customer.id || customer.email;
   return `${prefix}-${String(identifier).toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
 }
+
+export function getWishlistKey(customer = getCurrentCustomer()) {
+  return getCustomerStorageKey("so-wishlist", customer) || "so-wishlist";
+}
+
+export function getWishlistItems(customer = getCurrentCustomer()) {
+  const wishlistKey = getWishlistKey(customer);
+  const storedWishlist = getLocalStorage(wishlistKey);
+  return Array.isArray(storedWishlist) ? storedWishlist : [];
+}
+
+export function saveWishlistItems(items, customer = getCurrentCustomer()) {
+  const wishlistKey = getWishlistKey(customer);
+  setLocalStorage(wishlistKey, items);
+}
+
+export function isProductInWishlist(productId, customer = getCurrentCustomer()) {
+  const wishlist = getWishlistItems(customer);
+  return wishlist.some((item) => item?.Id === productId);
+}
+
+export function addProductToWishlist(product, customer = getCurrentCustomer()) {
+  const wishlist = getWishlistItems(customer);
+  const existingItem = wishlist.find((item) => item.Id === product.Id);
+  if (existingItem) {
+    return false;
+  }
+  wishlist.push({ ...product, addedAt: new Date().toISOString() });
+  saveWishlistItems(wishlist, customer);
+  return true;
+}
+
 export function normalizeCartItems(cart) {
   if (!cart) return [];
 
@@ -142,6 +174,11 @@ export function getCartCount() {
   );
 }
 
+export function getWishlistCount(customer = getCurrentCustomer()) {
+  const wishlistItems = getWishlistItems(customer);
+  return wishlistItems.length;
+}
+
 export function updateCartCount() {
   const cartCount = document.querySelector(".cart-count");
   const cartWrapper = document.querySelector(".cart");
@@ -163,6 +200,17 @@ export function updateCartCount() {
   }
 
   previousCartCount = count;
+}
+
+export function updateWishlistCount() {
+  const wishlistCount = document.querySelector(".wishlist-count");
+  if (!wishlistCount) {
+    return;
+  }
+
+  const count = getWishlistCount();
+  wishlistCount.textContent = count;
+  wishlistCount.classList.toggle("hide", count === 0);
 }
 
 export function alertMessage(message, scroll = true) {
@@ -237,6 +285,7 @@ export async function LoadHeaderFooter() {
   const headerElement = document.querySelector("#header");
   renderWithTemplate(headerTemplate, headerElement);
   updateCartCount();
+  updateWishlistCount();
   updateAccountMenu();
 
   const footerTemplate = await loadTemplate("../partials/footer.html");
@@ -291,7 +340,8 @@ export function showRegisterBanner() {
   if (
     getCurrentCustomer() ||
     !document.querySelector(".hero") ||
-    document.querySelector(".register-banner")
+    document.querySelector(".register-banner") ||
+    localStorage.getItem("registerBannerSeen")
   ) {
     return;
   }
@@ -312,15 +362,16 @@ export function showRegisterBanner() {
 
   // Add click listeners for all three buttons
   banner.querySelector(".register-banner__close").addEventListener("click", () => {
-    dismissBanner(banner);
+    dismissBanner(banner, true);
   });
 
   banner.querySelector(".register-banner__dismiss").addEventListener("click", () => {
-    dismissBanner(banner);
+    dismissBanner(banner, true);
   });
 
   banner.querySelector(".register-banner__register").addEventListener("click", () => {
-    dismissBanner(banner);
+    // mark as seen and remove banner when user follows the register link
+    dismissBanner(banner, true);
   });
 
   // Insert at the top of main
@@ -331,5 +382,9 @@ export function showRegisterBanner() {
 }
 
 function dismissBanner(banner) {
+  // persist dismissal so first-time visitors don't see it again
+  try {
+    localStorage.setItem("registerBannerSeen", "1");
+  } catch {}
   banner.remove();
 }

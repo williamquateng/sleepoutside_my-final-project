@@ -3,13 +3,12 @@ import {
   getDiscountAmount,
   getImageUrl,
   getCurrentCustomer,
-  getCustomerStorageKey,
-  getLocalStorage,
+  addProductToWishlist,
   isDiscounted,
-  setLocalStorage,
   setCartItems,
   alertMessage,
   updateCartCount,
+  updateWishlistCount,
   animateCartIcon, // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
 } from "./utils.mjs";
 
@@ -58,42 +57,29 @@ export default class ProductDetails {
   }
 
   getWishlist() {
-    const wishlistKey = getCustomerStorageKey("so-wishlist");
-    if (!wishlistKey) {
-      return [];
-    }
-
+    const wishlistKey = getCustomerStorageKey("so-wishlist") || "so-wishlist";
     const storedWishlist = getLocalStorage(wishlistKey);
     return Array.isArray(storedWishlist) ? storedWishlist : [];
   }
 
   saveWishlist(wishlist) {
-    const wishlistKey = getCustomerStorageKey("so-wishlist");
-    if (!wishlistKey) {
-      return;
-    }
-
+    const wishlistKey = getCustomerStorageKey("so-wishlist") || "so-wishlist";
     setLocalStorage(wishlistKey, wishlist);
   }
 
   addProductToWishlist() {
-    const customer = getCurrentCustomer();
-    if (!customer) {
-      alertMessage("Please register or sign in before adding items to your wishlist.");
-      return;
-    }
-
-    const wishlist = this.getWishlist();
-    const existingItem = wishlist.find((item) => item.Id === this.product.Id);
-
-    if (existingItem) {
+    const added = addProductToWishlist(this.product);
+    if (!added) {
       alertMessage(`${this.product.Name} is already in your wishlist.`, false);
       return;
     }
 
-    wishlist.push({ ...this.product, addedAt: new Date().toISOString() });
-    this.saveWishlist(wishlist);
-    alertMessage(`${this.product.Name} was added to your wishlist.`, false);
+    const customer = getCurrentCustomer();
+    const message = customer
+      ? `${this.product.Name} was added to your wishlist.`
+      : `${this.product.Name} was added to your wishlist (local). Register to save it across devices.`;
+    alertMessage(message, false);
+    updateWishlistCount();
   }
 
   getAllComments() {

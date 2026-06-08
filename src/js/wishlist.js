@@ -1,41 +1,22 @@
 import {
+  addProductToWishlist,
   alertMessage,
   animateCartIcon,
   escapeHtml,
   getCurrentCustomer,
-  getCustomerStorageKey,
   getImageUrl,
   getLocalStorage,
+  getWishlistItems,
   LoadHeaderFooter,
-  setLocalStorage,
+  saveWishlistItems,
+  setCartItems,
   updateCartCount,
+  updateWishlistCount,
 } from "./utils.mjs";
 
 const listElement = document.querySelector(".wishlist-list");
 const emptyMessage = document.querySelector(".wishlist-empty");
 
-function getWishlistKey() {
-  return getCustomerStorageKey("so-wishlist");
-}
-
-function getWishlistItems() {
-  const wishlistKey = getWishlistKey();
-  if (!wishlistKey) {
-    return [];
-  }
-
-  const storedWishlist = getLocalStorage(wishlistKey);
-  return Array.isArray(storedWishlist) ? storedWishlist : [];
-}
-
-function saveWishlistItems(items) {
-  const wishlistKey = getWishlistKey();
-  if (!wishlistKey) {
-    return;
-  }
-
-  setLocalStorage(wishlistKey, items);
-}
 
 function getCartItems() {
   const storedCart = getLocalStorage("so-cart");
@@ -96,17 +77,17 @@ function wishlistItemTemplate(item, index) {
 }
 
 function renderWishlist() {
-  const customer = getCurrentCustomer();
-  if (!customer) {
-    emptyMessage.innerHTML = `Please <a href="/register/index.html">register or sign in</a> to use a wishlist.`;
-    listElement.innerHTML = "";
-    return;
-  }
+  if (!listElement) return;
 
+  const customer = getCurrentCustomer();
   const wishlist = getWishlistItems();
+
   if (wishlist.length === 0) {
-    emptyMessage.textContent = "Your wishlist is empty.";
+    emptyMessage.innerHTML = customer
+      ? "Your wishlist is empty."
+      : 'Your wishlist is empty. <a href="/register/index.html">Register</a> to save your wishlist across devices.';
     listElement.innerHTML = "";
+    updateWishlistCount();
     return;
   }
 
@@ -114,6 +95,7 @@ function renderWishlist() {
   listElement.innerHTML = wishlist
     .map((item, index) => wishlistItemTemplate(item, index))
     .join("");
+  updateWishlistCount();
 }
 
 listElement.addEventListener("click", (event) => {
