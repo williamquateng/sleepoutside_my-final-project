@@ -82,26 +82,122 @@ export default class CheckoutProcess {
   }
 
   async checkout(form) {
+    const inlineMessageEl = document.querySelector("#checkout-message");
+
+    function showInline(text, type = "error") {
+      if (inlineMessageEl) {
+        inlineMessageEl.textContent = text;
+        inlineMessageEl.className = `form-message ${type}`;
+        inlineMessageEl.classList.remove("hide");
+      }
+      alertMessage(text);
+    }
+
     try {
+      // Basic pre-flight checks
+      if (!Array.isArray(this.list) || this.list.length === 0) {
+        showInline("Your cart is empty. Please add items before checking out.");
+        return null;
+      }
+
       const order = this.formDataToJSON(form);
       this.calculateOrderTotal();
+
+      // Validate card number (Luhn) if present
+      const cardNumberRaw = (order.cardNumber || "").replace(/\s/g, "");
+      if (!cardNumberRaw || !this.isCardNumberValid(cardNumberRaw)) {
+        showInline("Please enter a valid credit card number.");
+        return null;
+      }
+
+      // Validate expiry
+      if (!order.expiration || !this.isExpiryValid(order.expiration)) {
+        showInline("Please enter a valid expiration date in MM/YY format.");
+        return null;
+      }
+
+      // Validate CVC
+      if (!order.code || !this.isCvcValid(order.code)) {
+        showInline("Please enter a valid 3-digit CVC/CVV code.");
+        return null;
+      }
+
+      // minimal email check if provided
+      if (order.email && !this.isEmailValid(order.email)) {
+        showInline("Please enter a valid email address.");
+        return null;
+      }
 
       order.orderDate = new Date().toISOString();
       order.items = this.packageItems(this.list);
       order.orderTotal = this.orderTotal.toFixed(2);
       order.shipping = this.shipping;
       order.tax = this.tax.toFixed(2);
-      order.cardNumber = order.cardNumber.replace(/\s/g, "");
+      order.cardNumber = cardNumberRaw;
 
       const response = await this.services.checkout(order);
+
       clearLocalStorage(this.key);
       updateCartCount();
-      window.location.href = "/checkout/success.html";
+
+      showInline("Your order was placed successfully. Redirecting...", "success");
+      // small delay so user sees message before redirect
+      setTimeout(() => {
+        window.location.href = "/checkout/success.html";
+      }, 900);
+
       return response;
     } catch (error) {
-      alertMessage(this.getErrorMessage(error));
+      const msg = this.getErrorMessage(error);
+      const friendly = msg || "Unable to process your order. Please check your information and try again.";
+      const inline = `Checkout failed: ${friendly}`;
+      alertMessage(inline);
+      const inlineMessageEl2 = document.querySelector("#checkout-message");
+      if (inlineMessageEl2) {
+        inlineMessageEl2.textContent = inline;
+        inlineMessageEl2.className = `form-message error`;
+        inlineMessageEl2.classList.remove("hide");
+      }
       return null;
     }
+  }
+
+  isEmailValid(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || ""));
+  }
+
+  isCardNumberValid(number) {
+    // Luhn algorithm
+    const sanitized = String(number).replace(/\D/g, "");
+    if (!/^[0-9]{13,19}$/.test(sanitized)) return false;
+    let sum = 0;
+    let shouldDouble = false;
+    for (let i = sanitized.length - 1; i >= 0; i--) {
+      let digit = parseInt(sanitized.charAt(i), 10);
+      if (shouldDouble) {
+        digit *= 2;
+        if (digit > 9) digit -= 9;
+      }
+      sum += digit;
+      shouldDouble = !shouldDouble;
+    }
+    return sum % 10 === 0;
+  }
+
+  isExpiryValid(value) {
+    // Expect MM/YY
+    if (!/^(0[1-9]|1[0-2])\/[0-9]{2}$/.test(value)) return false;
+    const [mm, yy] = value.split("/").map((v) => parseInt(v, 10));
+    const now = new Date();
+    const fullYear = 2000 + yy;
+    const expiry = new Date(fullYear, mm, 1);
+    // set to first day of month following expiry
+    const endOfMonth = new Date(fullYear, mm, 0, 23, 59, 59);
+    return endOfMonth >= now;
+  }
+
+  isCvcValid(value) {
+    return /^[0-9]{3,4}$/.test(String(value || ""));
   }
 
   getErrorMessage(error) {
