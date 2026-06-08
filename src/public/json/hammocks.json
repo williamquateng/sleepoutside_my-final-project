@@ -1,0 +1,46 @@
+{
+  "Count": 2,
+  "Page": 1,
+  "PerPage": 24,
+  "Title": "Search for \"hammocks\" ",
+  "Result": [
+    {
+      "Id": "HMK01",
+      "IsClearance": false,
+      "IsNew": true,
+      "NameWithoutBrand": "Traveler Hammock - Single",
+      "Name": "CampCo Traveler Hammock - Single",
+      "Images": {
+        "PrimarySmall": "https://via.placeholder.com/80x60?text=H1",
+        "PrimaryMedium": "https://via.placeholder.com/160x120?text=H1",
+        "PrimaryLarge": "https://via.placeholder.com/320x240?text=H1"
+      },
+      "Colors": [
+        { "ColorCode": "01", "ColorName": "Forest Green" }
+      ],
+      "DescriptionHtmlSimple": "Lightweight single-person hammock ideal for backpacking.",
+      "SuggestedRetailPrice": 69.99,
+      "Brand": { "Name": "CampCo" },
+      "FinalPrice": 49.99
+    },
+    {
+      "Id": "HMK02",
+      "IsClearance": false,
+      "IsNew": false,
+      "NameWithoutBrand": "Ultralight Double Hammock",
+      "Name": "TrailSleep Ultralight Double Hammock",
+      "Images": {
+        "PrimarySmall": "https://via.placeholder.com/80x60?text=H2",
+        "PrimaryMedium": "https://via.placeholder.com/160x120?text=H2",
+        "PrimaryLarge": "https://via.placeholder.com/320x240?text=H2"
+      },
+      "Colors": [
+        { "ColorCode": "02", "ColorName": "Ocean Blue" }
+      ],
+      "DescriptionHtmlSimple": "Roomy double hammock with strong webbing and compact pack size.",
+      "SuggestedRetailPrice": 129.99,
+      "Brand": { "Name": "TrailSleep" },
+      "FinalPrice": 99.99
+    }
+  ]
+}
