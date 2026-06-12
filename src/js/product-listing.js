@@ -98,6 +98,8 @@ productListElement?.addEventListener("click", async (event) => {
       alertMessage(`${product.Name} is already in your wishlist.`, false);
     }
     updateWishlistCount();
+  }
+});
 
 function formatCategory(value) {
   return value
